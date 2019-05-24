@@ -5,64 +5,67 @@ require_relative('../room')
 require_relative('../song')
 require_relative('../guest')
 
+require ('pry')
+
 class TestRoom < Minitest::Test
 
   def setup
+
+    @guest1 = Guest.new("Bob", 5)
+    @guest2 = Guest.new("Jim", 20)
+    @guest3 = Guest.new("Susan", 4)
+
     @song1 = Song.new("Teenage Kicks")
-    @song2 = Song.new("Hello")
-    @song3 = Song.new("Ride")
-    @song4 = Song.new("Whats Up")
-    @song5 = Song.new("Simple as This")
-    @song6 = Song.new("BEST song ever!")
+    @song2 = Song.new("Whats Up")
+    @song3 = Song.new("Simple as This")
 
-    @guest1 = Guest.new("Bob")
-    @guest2 = Guest.new("Jim")
-    @guest3 = Guest.new("Susan")
-    @guest4 = Guest.new("Adam")
-    @guest5 = Guest.new("Helen")
+    @room1 = Room.new(1, 7,
+    [@guest1, @guest2],
+    [@song1, @song2])
 
-    @room1 = Room.new(1,
-    [@guest1, @guest3],
-    [@song1, @song2, @song5])
-
-    @room2 = Room.new(2,
-    [@guest2, @guest4],
-    [@song1, @song2, @song3, @song4])
   end
 
   def test_room_number
-    assert_equal(2, @room2.room_num)
+    assert_equal(1, @room1.room_num)
   end
 
-  def test_people_count_in_room__2
-    assert_equal(2, @room2.guests.count)
+  def test_people_count_in_room
+    assert_equal(2, @room1.guests.count)
   end
 
-  def test_people_names_in_room__1
-    assert_equal(["Bob", "Susan"], @room1.guests.map { | guest | guest.name } )
+  def test_guest_names_in_room
+    assert_equal(["Bob", "Jim"], @room1.guests.map { | guest | guest.name } )
   end
 
-  def test_song_count_in_room__1
-    assert_equal(3, @room1.songs.count)
+  def test_song_count_in_room
+    assert_equal(2, @room1.songs.count)
   end
 
-  def test_songs_in_room__2
-    assert_equal(["Teenage Kicks", "Hello", "Ride", "Whats Up"], @room2.songs.map { | song | song.song_name } )
+  def test_songs_in_room
+    assert_equal(["Teenage Kicks", "Whats Up"], @room1.songs.map { | song | song.song_name } )
   end
 
-  def test_check_in_guest__room1
-    @room1.check_in_guest(@guest5)
-    assert_equal([@guest1, @guest3, @guest5], @room1.guests)
+  def test_check_in_guest
+    @room1.check_in_guest(@guest3)
+    assert_equal([@guest1, @guest2, @guest3], @room1.guests)
   end
 
-  def test_check_out_guest__room2
-    @room2.check_out_guest(@guest4)
-    assert_equal([@guest2], @room2.guests)
+  def test_check_out_guest
+    @room1.check_out_guest(@guest1)
+    assert_equal([@guest2], @room1.guests)
   end
 
-  def test_add_song__room1
-    @room1.add_song(@song6)
-    assert_equal([@song1, @song2, @song5, @song6], @room1.songs)
+  def test_add_song
+    @room1.add_song(@song3)
+    assert_equal([@song1, @song2, @song3], @room1.songs)
+  end
+
+  def test_max_guests__room1
+    assert_equal(7, @room1.max_guests)
+  end
+
+  def test_entry_fee__room1
+    assert_equal(5, @room1.entry_fee)
   end
 
 end

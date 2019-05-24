@@ -2,12 +2,16 @@
 
 class Room
 
-  attr_reader :room_num, :guests, :songs
+  attr_reader :room_num, :max_guests, :guests, :songs, :entry_fee
 
-  def initialize(room_num, guests, songs)
+  def initialize(room_num, max_guests, guests, songs)
     @room_num = room_num
+    @max_guests = max_guests
     @guests = guests
     @songs = songs
+
+    # entry fee same for all rooms
+    @entry_fee = 5
   end
 
   def check_in_guest(guest)
