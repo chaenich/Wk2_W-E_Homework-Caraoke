@@ -1,4 +1,4 @@
-# require ('pry')
+require ('pry')
 
 class Room
 
@@ -15,15 +15,23 @@ class Room
   end
 
   def check_in_guest(guest)
-    @guests.push(guest)
+    @guests.push(guest) if got_enough_cash?(guest) && still_room?(guest)
   end
 
   def check_out_guest(guest)
-    guests.delete(guest)
+    @guests.delete(guest)
   end
 
   def add_song(song)
-    songs.push(song)
+    @songs.push(song)
+  end
+
+  def still_room?(guest)
+    return @guests.count < @max_guests
+  end
+
+  def got_enough_cash?(guest)
+    return guest.cash >= @entry_fee
   end
 
 end
