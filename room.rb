@@ -34,4 +34,9 @@ class Room
     return guest.cash >= @entry_fee
   end
 
+  def fave_song_in_room(guest)
+# binding.pry
+    (@songs.map { | song |  song.song_name } ).include?(guest.fave_song) ? "WooHoo" : "Bah"
+  end
+
 end

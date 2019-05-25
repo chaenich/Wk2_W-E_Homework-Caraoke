@@ -11,11 +11,11 @@ class TestRoom < Minitest::Test
 
   def setup
 
-    @guest1 = Guest.new("Bob", 10)
-    @guest2 = Guest.new("Jim", 20)
-    @guest3 = Guest.new("Susan", 8)
-    @guest4 = Guest.new("Harry", 5)
-    @guest5 = Guest.new("Sandra", 4)
+    @guest1 = Guest.new("Bob", 10, "Hello")
+    @guest2 = Guest.new("Jim", 20, "Whats Up")
+    @guest3 = Guest.new("Susan", 8, "Teenage Kicks")
+    @guest4 = Guest.new("Harry", 5, "Simple as This")
+    @guest5 = Guest.new("Sandra", 4, "Warhead")
 
     @song1 = Song.new("Teenage Kicks")
     @song2 = Song.new("Whats Up")
@@ -116,6 +116,20 @@ class TestRoom < Minitest::Test
     # enough cash but no room - not in
     @room1.check_in_guest(@guest4)
     assert_equal(["Bob", "Jim", "Susan"], @room1.guests.map { | guest | guest.name })
+  end
+
+  def test_fave_song_exists
+    assert_equal("Teenage Kicks", @guest3.fave_song)
+  end
+
+  def test_guest_fave_song_in_room__yes
+    guest_reaction = @room1.fave_song_in_room(@guest3)
+    assert_equal("WooHoo", guest_reaction)
+  end
+
+  def test_guest_fave_song_in_room__no
+    guest_reaction = @room1.fave_song_in_room(@guest4)
+    assert_equal("Bah", guest_reaction)
   end
 
 end
