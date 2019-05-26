@@ -1,8 +1,7 @@
 require('minitest/autorun')
 require('minitest/rg')
 require_relative('../guest')
-# require_relative('../room')
-# require_relative('../song')
+
 
 class TestGuest < Minitest::Test
 
@@ -20,4 +19,7 @@ class TestGuest < Minitest::Test
     assert_equal(4, @guest3.cash)
   end
 
+    def test_fave_song
+      assert_equal("Hello", @guest1.fave_song)
+    end
 end

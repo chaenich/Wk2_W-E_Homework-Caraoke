@@ -1,9 +1,10 @@
 require ('minitest/autorun')
 require ('minitest/rg')
-require ('pry')
+# require ('pry')
 require_relative('../room')
 require_relative('../song')
 require_relative('../guest')
+require_relative('../tab')
 
 require ('pry')
 
@@ -21,10 +22,15 @@ class TestRoom < Minitest::Test
     @song2 = Song.new("Whats Up")
     @song3 = Song.new("Simple as This")
 
+    # caraoke spend, bar spend
+    @tab1 = Tab.new(@guest1, 30, 200)
+    @tab2 = Tab.new(@guest2, 20, 80)
+
     # Room num, max num guests
     @room1 = Room.new(1, 3,
     [@guest1, @guest2],
-    [@song1, @song2])
+    [@song1, @song2],
+    [@tab1, @tab2])
 
   end
 
@@ -118,7 +124,7 @@ class TestRoom < Minitest::Test
     assert_equal(["Bob", "Jim", "Susan"], @room1.guests.map { | guest | guest.name })
   end
 
-  def test_fave_song_exists
+  def test_fave_song_for_guest
     assert_equal("Teenage Kicks", @guest3.fave_song)
   end
 
@@ -131,5 +137,28 @@ class TestRoom < Minitest::Test
     guest_reaction = @room1.fave_song_in_room(@guest4)
     assert_equal("Bah", guest_reaction)
   end
+
+  def test_add_tab_to_room
+    @tab3 = Tab.new(@guest3, 10, 0)
+    @room1.add_tab_to_room(@tab3)
+    assert_equal([@tab1, @tab2, @tab3], @room1.tabs)
+  end
+
+  def test_caraoke_tab_transaction__£5_entry_fee_fixed
+  # guest3 cash down by 5; tab3 caraoke_spend up by 5
+    @room1.check_in_guest(@guest3)
+    @tab3 = Tab.new(@guest3, 10, 0)
+    @room1.add_tab_to_room(@tab3)
+    @room1.perform_caraoke_tab_accounting(@guest3, @tab3)
+    assert_equal(3, @guest3.cash)
+    assert_equal(15, @tab3.caraoke_spend)
+  end
+
+  def test_bar_tab_transaction__£3_bar_bill
+    @room1.perform_bar_tab_accounting(@guest2, @tab2, 3)
+    assert_equal(17, @guest2.cash)
+    assert_equal(83, @tab2.bar_spend)
+  end
+
 
 end
