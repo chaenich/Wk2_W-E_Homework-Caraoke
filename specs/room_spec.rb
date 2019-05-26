@@ -11,18 +11,18 @@ require ('pry')
 class TestRoom < Minitest::Test
 
   def setup
-
-    @guest1 = Guest.new("Bob", 10, "Hello")
-    @guest2 = Guest.new("Jim", 20, "Whats Up")
-    @guest3 = Guest.new("Susan", 8, "Teenage Kicks")
-    @guest4 = Guest.new("Harry", 5, "Simple as This")
-    @guest5 = Guest.new("Sandra", 4, "Warhead")
+    # xx, cash, xx, free_beer_num
+    @guest1 = Guest.new("Bob", 10, "Hello", 6)
+    @guest2 = Guest.new("Jim", 20, "Whats Up", 8)
+    @guest3 = Guest.new("Susan", 8, "Teenage Kicks", 6)
+    @guest4 = Guest.new("Harry", 5, "Simple as This", 9)
+    @guest5 = Guest.new("Sandra", 4, "Warhead", 1)
 
     @song1 = Song.new("Teenage Kicks")
     @song2 = Song.new("Whats Up")
     @song3 = Song.new("Simple as This")
 
-    # caraoke spend, bar spend
+    # xx, caraoke spend, bar spend
     @tab1 = Tab.new(@guest1, 30, 200)
     @tab2 = Tab.new(@guest2, 20, 80)
 
@@ -160,5 +160,15 @@ class TestRoom < Minitest::Test
     assert_equal(83, @tab2.bar_spend)
   end
 
+  # if random number draw matches cust num -> free beer
+  def test_free_beer__you_win
+    good_day = @room1.have_i_won_free_beer?(@guest2)
+    assert_equal(true, good_day)
+  end
+
+  def test_free_beer__not_this_time
+    good_day = @room1.have_i_won_free_beer?(@guest3)
+    assert_equal(false, good_day)
+  end
 
 end

@@ -7,8 +7,8 @@ require_relative('../guest')
 class TestTab < Minitest::Test
 
   def setup
-    @guest1 = Guest.new("Bob", 5, "Hello")
-    @guest2 = Guest.new("Jim", 20, "Simple as This'")
+    @guest1 = Guest.new("Bob", 5, "Hello", 4)
+    @guest2 = Guest.new("Jim", 20, "Simple as This", 7)
 
     @tab1 = Tab.new(@guest1, 10, 200)
     @tab2 = Tab.new(@guest2, 20, 80)

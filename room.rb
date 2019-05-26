@@ -55,5 +55,10 @@ class Room
     tab.bar_spend += amt_spent
   end
 
+  def have_i_won_free_beer?(guest)
+    srand 2 # random number for seed -> 8 - testing
+    draw_num = rand(10)
+    return draw_num == guest.free_beer_num
+  end
 
 end
